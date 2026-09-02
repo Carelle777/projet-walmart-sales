@@ -1,0 +1,26 @@
+# Walmart Sales Prediction 🛒
+
+## Contexte du Projet
+Le service marketing de Walmart souhaite mieux comprendre l'influence des indicateurs économiques (température, prix du carburant, taux de chômage, etc.) sur les ventes hebdomadaires de ses magasins. 
+L'objectif de ce projet est de construire un modèle de **Machine Learning supervisé (Régression)** capable d'estimer ces ventes hebdomadaires avec la meilleure précision possible, afin d'aider à la planification des futures campagnes marketing.
+
+## Objectifs
+Ce projet valide les compétences d'analyse prédictive sur données structurées, divisé en trois parties :
+1. **Analyse Exploratoire (EDA) & Preprocessing :** Nettoyage des données, gestion des valeurs manquantes, feature engineering temporel (extraction des dates) et exclusion des outliers (règle des 3 écarts-types).
+2. **Modèle de Référence (Baseline) :** Entraînement d'une Régression Linéaire classique.
+3. **Lutte contre le Surapprentissage (Overfitting) :** Entraînement d'un modèle régularisé (Ridge), avec optimisation des hyperparamètres via `GridSearchCV` et évaluation par validation croisée (K-Fold).
+
+## Stack Technique
+* **Langage :** Python
+* **Manipulation de données :** Pandas, Numpy
+* **Machine Learning :** Scikit-Learn (Pipeline, ColumnTransformer, LinearRegression, Ridge, GridSearchCV)
+* **Visualisation :** Matplotlib, Seaborn
+
+## Pipeline de Traitement (Scikit-Learn)
+Pour garantir l'absence de fuite de données (Data Leakage), le preprocessing est encapsulé :
+* **Variables numériques :** Imputation par la moyenne & Standardisation (`StandardScaler`).
+* **Variables catégorielles :** Imputation par la valeur la plus fréquente & Encodage binaire (`OneHotEncoder` avec `drop='first'` et `handle_unknown='ignore'`).
+
+## Résultats & Feature Importance
+Le modèle final retenu est une **Régression Ridge** optimisée.
+L'analyse des coefficients du modèle (Feature Importance) permet d'isoler les variables ayant le plus d'impact sur le chiffre d'affaires, fournissant ainsi des recommandations claires et actionnables pour les équipes marketing de Walmart.
