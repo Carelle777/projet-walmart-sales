@@ -21,6 +21,23 @@ Pour garantir l'absence de fuite de données (Data Leakage), le preprocessing es
 * **Variables numériques :** Imputation par la moyenne & Standardisation (`StandardScaler`).
 * **Variables catégorielles :** Imputation par la valeur la plus fréquente & Encodage binaire (`OneHotEncoder` avec `drop='first'` et `handle_unknown='ignore'`).
 
-## Résultats & Feature Importance
-Le modèle final retenu est une **Régression Ridge** optimisée.
-L'analyse des coefficients du modèle (Feature Importance) permet d'isoler les variables ayant le plus d'impact sur le chiffre d'affaires, fournissant ainsi des recommandations claires et actionnables pour les équipes marketing de Walmart.
+## Résultats
+Après nettoyage (valeurs manquantes sur la cible et outliers retirés), il reste **131 lignes**.
+
+| Modèle | R² entraînement | R² test |
+|---|---|---|
+| Régression linéaire (baseline) | 0,973 | 0,934 |
+| Ridge optimisé (alpha = 0,01) | 0,973 | 0,936 |
+
+* La validation croisée à 3 plis avec Ridge donne un R² de 0,819 avant réglage, et de 0,945 avec le meilleur alpha trouvé par `GridSearchCV`.
+* En mots simples : le modèle explique environ **94 %** des variations des ventes sur des données qu'il n'a jamais vues.
+
+## Variables importantes (coefficients du modèle Ridge)
+* **Le magasin est la variable la plus importante.** Les 10 plus gros coefficients sont tous des magasins (par rapport au magasin 1, pris comme référence). Exemple : le magasin 5 vend environ 1,4 million de moins par semaine, les magasins 14 et 10 environ 0,7 million de plus.
+* **Les variables économiques pèsent beaucoup moins** (variables standardisées) : chômage -93 000, CPI +78 000, mois +65 000, température -38 000, prix du carburant -35 000.
+* La colonne `day_of_week` a un coefficient nul : elle ne varie pas dans les données.
+
+## Limites
+* Petit jeu de données (131 lignes) et un seul découpage 80/20 : les résultats peuvent varier avec un autre découpage.
+* L'alpha retenu est très faible (0,01) : Ridge est presque identique à la régression linéaire, la régularisation apporte seulement un petit gain.
+* Les coefficients montrent des liens statistiques, pas des causes.
